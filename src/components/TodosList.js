@@ -5,8 +5,8 @@ import TodoListItem from './TodosListItem'
 
 class TodosList extends React.Component {
     renderTasks() {
-        return this.props.todos.map((todo, index) => {
-            return <TodoListItem key={index} {...todo} />
+        return this.props.todos.map((todo) => {
+            return <TodoListItem key={todo.id} {...todo} />
         });
     }
 
@@ -29,8 +29,7 @@ class TodosList extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        todos: state.todos,
-        todo: state.newTodo
+        todos: state.todos
     }
 }
 
