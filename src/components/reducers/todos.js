@@ -1,14 +1,15 @@
 let taskId = 2;
+let editingState = {};
 const initialState = [
     {
         id: 1,
         task: 'Learn React',
-        isCompleted: true
+        editing: false
     },
     {
         id: 2,
         task: 'Learn Redux',
-        isCompleted: false
+        editing: false
     }
 ];
 
@@ -20,13 +21,28 @@ export const todos = (state=initialState, action) => {
                 {
                     id: ++taskId,
                     task: action.payload,
-                    isCompleted: false
+                    editing: false
                 },
             ];
         case 'DELETE_TODO':
             return state.filter((todo) => {
                return todo.task !== action.payload;
             });
+        case 'EDIT_TODO':
+            if (!editingState.isBeingEdited || (editingState.isBeingEdited && (editingState.task === action.payload))) {
+                return state.map((todo) => {
+                    if (todo.task === action.payload) {
+                        todo.editing = !todo.editing;
+                        editingState = {
+                            task: todo.task,
+                            isBeingEdited: !editingState.isBeingEdited
+                        };
+                    }
+                    return todo;
+                });
+            } else {
+                return state;
+            }
         default:
             return state;
     }
